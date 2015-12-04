@@ -1,0 +1,28 @@
+{
+  "name": "ns-formula-parse",
+  "version": "0.1.0",
+  "description": "This project is a NetSuite Formula parser based on PEG",
+  "main": "netsuite-formula-parse.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suiteplus/ns-formula-parse.git"
+  },
+  "keywords": [
+    "netsuite",
+    "suiteplus",
+    "formula",
+    "formulatext",
+    "sql",
+    "peg",
+    "pegjs"
+  ],
+  "author": "daniel.joppi@suiteplus.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/suiteplus/ns-formula-parse/issues"
+  },
+  "homepage": "https://github.com/suiteplus/ns-formula-parse#readme"
+}
