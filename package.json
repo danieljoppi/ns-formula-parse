@@ -4,7 +4,7 @@
   "description": "This project is a NetSuite Formula parser based on PEG",
   "main": "netsuite-formula-parse.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,14 @@
   "bugs": {
     "url": "https://github.com/suiteplus/ns-formula-parse/issues"
   },
-  "homepage": "https://github.com/suiteplus/ns-formula-parse#readme"
+  "homepage": "https://github.com/suiteplus/ns-formula-parse#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "isparta": "^4.0.0",
+    "through": "^2.3.8"
+  }
 }
