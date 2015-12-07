@@ -21,6 +21,19 @@ describe('<Unit Test - Netsuite Formula Parse>', function () {
             return done();
         });
 
+        it('resolve join field', function (done) {
+            let text = '{legal.firstname}||\' \'||{legal.middlename}|| \' \' || {legal.lastname}',
+                person = {
+                    'legal.firstname': data.firstname,
+                    'legal.middlename': data.middlename,
+                    'legal.lastname': data.lastname
+                },
+                result = formula.parse(text, person);
+
+            should(result).be.equal('Daniel Henrique Joppi');
+            return done();
+        });
+
         it('resolve conditional formula', function (done) {
             let text = 'case{isperson}  when "T" then({firstname}||" "||{middlename}||" "|| {lastname})else({custentity_sp_razaosocial_ds}) end',
                 person = JSON.parse(JSON.stringify(data));
