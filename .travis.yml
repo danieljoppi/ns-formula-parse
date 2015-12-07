@@ -13,7 +13,7 @@ install:
   - 'npm config set loglevel http'
   - 'time npm install'
 
-#after_script:
+after_script:
   - 'npm run coveralls'
 
 script:
