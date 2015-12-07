@@ -7,12 +7,14 @@
 //
 // Rules with indentation or with comments have manual edits.
 //
-start = value
+start = block_select / block_select1
 
 whitespace = [ \t\n\r]*
 whitespace1 = [ \t\n\r]+
 
-value =
+value = condition / select / string
+
+condition =
   v: ( CASE(expr) ? (WHEN expr THEN expr)+ (ELSE expr)? END)
   {
   	var test = v[1],
@@ -23,43 +25,49 @@ value =
       block1 = block1[0];
 
     var when = block1[1];
-    if (test == when )
-      return block1[3];
-    else
-      return block2[1];
+    if (!test && when) { return block1[3];}
+    else if (test == when) { return block1[3];}
+    else { return block2[1]; }
   }
-
-string =
-  s:('\'' (whitespace1 / name) '\'')
- { return s[1]+''; }
 
 expr =
   e: ( whitespace
-       ( select
-       / ( ( ISNULL / NOTNULL / ( NOT NULL ) ) )
+       ( 
+       ( ( ISNULL / NOTNULL / ( NOT NULL ) ) )
        / ( IS NOT ? expr )
        / ( NOT ? BETWEEN expr AND expr )
-       / value
-       / string
        / block_select
+       / block_select1
      ) )
   { return e[1]; }
 
+string =
+  s:('\'' single_character* '\'')
+ { return s[1].join(''); }
+ 
 binary_operator =
-  x: ( whitespace ('||') whitespace (select / string ))
-  { return x[3] }
+  x: ( whitespace ('||') whitespace value)
+  { return x[3]; }
+
+single_character = !("'") character { return text(); }
+
+character = .
 
 name =
   str:[A-Za-z0-9_\-]+
   { return str.join(''); }
 
 block_select =
-	bs : ('(' select (binary_operator)* ')' )
+	(v:value bo:(binary_operator)*)
+    {return v + bo.join('');}
+
+block_select1 =
+	bs : ('(' value (binary_operator)* ')'* )
     {
       bs.pop();
       bs = bs.splice(1);
       return bs.map(function(w) {
-      	if (Array.isArray(w)) return w.join('')
+      	if (Array.isArray(w)) return w.join('');
         else return w;
       }).join('');
     }
@@ -69,14 +77,14 @@ select =
     { return s[1]; }
 
 AND = w: (whitespace1 ("AND" / "and")) {return w[1];}
-BETWEEN = w: (whitespace1 "BETWEEN") {return w[1];}
+BETWEEN = w: (whitespace1 ("BETWEEN" / "between")) {return w[1];}
 CASE = w: (whitespace ("CASE" / "case")) {return w[1];}
 ELSE = w: (whitespace ("ELSE" / "else")) {return w[1];}
 END = w: (whitespace ("END" / "end")) {return w[1];}
 IS = w: (whitespace1 ("IS" / "is")) {return w[1];}
-ISNULL = w: (whitespace1 "ISNULL") {return w[1];}
-NOT = w: (whitespace1 "NOT") {return w[1];}
-NULL = w: (whitespace1 "NULL") {return w[1];}
-NOTNULL = w: (whitespace1 "NOTNULL") {return w[1];}
+ISNULL = w: (whitespace1 ("ISNULL" / "isnull")) {return w[1];}
+NOT = w: (whitespace1 ("NOT" / "not")) {return w[1];}
+NULL = w: (whitespace1 ("NULL" / "null")) {return w[1];}
+NOTNULL = w: (whitespace1 ("NOTNULL" / "notnull")) {return w[1];}
 THEN = w: (whitespace1 ("THEN" / "then")) {return w[1];}
 WHEN = w: (whitespace1 ("WHEN" / "when")) {return w[1];}
