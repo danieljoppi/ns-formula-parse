@@ -22,7 +22,7 @@ describe('<Unit Test - Netsuite Formula Parse>', function () {
         });
 
         it('resolve conditional formula', function (done) {
-            let text = 'case{isperson}  when "T" then({firstname}||" "||{middlename}||" "|| {lastname})else ({custentity_sp_razaosocial_ds}) end',
+            let text = 'case{isperson}  when "T" then({firstname}||" "||{middlename}||" "|| {lastname})else({custentity_sp_razaosocial_ds}) end',
                 person = JSON.parse(JSON.stringify(data));
 
             person.isperson = 'T';
@@ -30,10 +30,10 @@ describe('<Unit Test - Netsuite Formula Parse>', function () {
 
             should(result1).be.equal('Daniel Henrique Joppi');
 
-            //person.isperson = 'F';
-            //data.custentity_sp_razaosocial_ds = 'bacanaa veioo!!';
-            //let result2 = formula.parse(text, person);
-            //should(result2).be.equal('bacanaa veioo!!');
+            person.isperson = 'F';
+            person.custentity_sp_razaosocial_ds = 'bacanaa veioo!!';
+            let result2 = formula.parse(text, person);
+            should(result2).be.equal('bacanaa veioo!!');
             return done();
         });
     });
