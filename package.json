@@ -34,6 +34,7 @@
     "gulp-mocha": "^2.2.0",
     "gulp-plumber": "^1.0.1",
     "isparta": "^4.0.0",
+    "require-dir": "^0.3.0",
     "should": "^7.1.1",
     "through": "^2.3.8"
   }
